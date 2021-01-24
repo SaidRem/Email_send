@@ -1,9 +1,9 @@
 import smtplib
 from email.message import EmailMessage
-from confidential import gmail_address, gmail_password, ya_addr_1, ya_addr_2
+from confidential import gmail_address, gmail_pas, ya_addr_1, ya_addr_2
 
 EMAIL_AD = gmail_address
-EMAIL_PAS = gmail_password
+EMAIL_PAS = gmail_pas
 
 def send_email(send_to=None):
     msg = EmailMessage()
