@@ -1,6 +1,7 @@
 import smtplib
 from email.message import EmailMessage
 from confidential import gmail_address, gmail_pas, ya_addr_1, ya_addr_2, file_math_py
+from confidential import html_content
 
 EMAIL_AD = gmail_address
 EMAIL_PAS = gmail_pas
@@ -38,8 +39,22 @@ def send_file(filepath=None, message=None, send_to=None):
         smtp.login(EMAIL_AD, EMAIL_PAS)
         smtp.send_message(msg)
 
+def send_html(message=None, send_to=None):
+    msg = EmailMessage()
+    msg['Subject'] = 'Here is my html mail.'
+    msg['From'] = EMAIL_AD
+    msg['To'] = send_to
+    if message:
+        msg.set_content(message, subtype='html')
+    else:
+        msg.set_content(html_content, subtype='html')
+    
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_AD, EMAIL_PAS)
+        smtp.send_message(msg)
 
 if __name__ == '__main__':
     # send_email(send_to=[gmail_address, ya_addr_2])
     # send_email(send_to=[gmail_address])
-    send_file(filepath=file_math_py, send_to=[gmail_address, ya_addr_2])
+    # send_file(filepath=file_math_py, send_to=[gmail_address, ya_addr_2])
+    send_html(send_to=[gmail_address, ya_addr_2])
