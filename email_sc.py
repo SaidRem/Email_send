@@ -13,9 +13,9 @@ def send(message):
         smtp.send_message(message)
 
 
-def send_email(message=None, send_to=None):
+def send_email(message=None, send_to=None, subject=None):
     msg = EmailMessage()
-    msg['Subject'] = 'This email has been sent through python script'
+    msg['Subject'] = subject if subject else 'This is email'
     msg['From'] = EMAIL_AD
     msg['To'] = send_to
     if message:
@@ -23,13 +23,14 @@ def send_email(message=None, send_to=None):
     else:
         msg.set_content('Hello friend. My python script actually works')
     send(msg)
+    return "Email sent"
 
 
-def send_file(filepath=None, message=None, send_to=None):
+def send_file(filepath=None, message=None, send_to=None, subject=None):
     if not filepath and send_to:
         return 'Enter path to pdf file and email address'
     msg = EmailMessage()
-    msg['Subject'] = 'PDF File'
+    msg['Subject'] = subject if subject else 'PDF File attached'
     msg['From'] = EMAIL_AD
     msg['To'] = send_to
     if message:
@@ -40,11 +41,12 @@ def send_file(filepath=None, message=None, send_to=None):
     with open(filepath, 'rb') as f:
         msg.add_attachment(f.read(), maintype='application', subtype='octet-stream', filename=f.name)
     send(msg)
+    return "File sent"
 
 
-def send_html(message=None, send_to=None):
+def send_html(message=None, send_to=None, subject=None):
     msg = EmailMessage()
-    msg['Subject'] = 'Here is my html mail.'
+    msg['Subject'] = subject if subject else 'Here is mail with html.'
     msg['From'] = EMAIL_AD
     msg['To'] = send_to
     if message:
@@ -52,7 +54,7 @@ def send_html(message=None, send_to=None):
     else:
         msg.set_content(html_content, subtype='html')
     send(msg)
-    return "Html sent"
+    return "Email with html sent"
     
 
 
