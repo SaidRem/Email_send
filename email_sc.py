@@ -8,6 +8,10 @@ EMAIL_PAS = gmail_pas
 
 
 def send(message):
+    """
+    Send message by SMTP.
+    Service func for 'send_email()', 'send_file()', 'send_html'. 
+    """
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(EMAIL_AD, EMAIL_PAS)
         smtp.send_message(message)
@@ -45,6 +49,7 @@ def send_file(filepath=None, message=None, send_to=None, subject=None):
 
 
 def send_html(message=None, send_to=None, subject=None):
+    "Send email message with html tags."
     msg = EmailMessage()
     msg['Subject'] = subject if subject else 'Here is mail with html.'
     msg['From'] = EMAIL_AD
