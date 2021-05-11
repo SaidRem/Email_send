@@ -1,7 +1,7 @@
 import smtplib
 from email.message import EmailMessage
 from confidential import gmail_address, gmail_pas, ya_addr_1, ya_addr_2, file_math_py
-from confidential import html_content
+from confidential import html_content, mult
 
 EMAIL_AD = gmail_address
 EMAIL_PAS = gmail_pas
@@ -18,6 +18,9 @@ def send(message):
 
 
 def send_email(message=None, send_to=None, subject=None):
+    """
+    Send text message in 'message' var.
+    """
     msg = EmailMessage()
     msg['Subject'] = subject if subject else 'This is email'
     msg['From'] = EMAIL_AD
@@ -25,22 +28,25 @@ def send_email(message=None, send_to=None, subject=None):
     if message:
         msg.set_content(message)
     else:
-        msg.set_content('Hello friend. My python script actually works')
+        msg.set_content('Hello friend. This email sent by python script.')
     send(msg)
     return "Email sent"
 
 
 def send_file(filepath=None, message=None, send_to=None, subject=None):
-    if not filepath and send_to:
-        return 'Enter path to pdf file and email address'
+    """
+    Send file with message.
+    """
+    if not (filepath and send_to):
+        return 'Enter path to a file and email address'
     msg = EmailMessage()
-    msg['Subject'] = subject if subject else 'PDF File attached'
+    msg['Subject'] = subject if subject else 'File attached'
     msg['From'] = EMAIL_AD
     msg['To'] = send_to
     if message:
         msg.set_content(message)
     else:
-        msg.set_content('There is attachment with pdf.')
+        msg.set_content('Hello friend. This email sent by python script')
 
     with open(filepath, 'rb') as f:
         msg.add_attachment(f.read(), maintype='application', subtype='octet-stream', filename=f.name)
@@ -66,5 +72,4 @@ def send_html(message=None, send_to=None, subject=None):
 if __name__ == '__main__':
     # send_email(send_to=[gmail_address, ya_addr_2])
     # send_email(send_to=[gmail_address])
-    # send_file(filepath=file_math_py, send_to=[gmail_address, ya_addr_2])
-    send_html(send_to=[gmail_address, ya_addr_2])
+    # send_html(send_to=[gmail_address, ya_addr_2])
