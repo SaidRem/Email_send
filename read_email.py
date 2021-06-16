@@ -10,11 +10,10 @@ EMAIL_PAS = gmail_pas
 
 def mail_info():
     """Number of messages in INBOX."""
-    imapObj = imapclient.IMAPClient('imap.gmail.com', ssl=True)
-    imapObj.login(EMAIL_AD, EMAIL_PAS)
-    select_info = imapObj.select_folder('INBOX', readonly=True)
-    messages_num = select_info[b'EXISTS']
-    imapObj.logout()
+    with imapclient.IMAPClient('imap.gmail.com', ssl=True) as imapObj:
+        imapObj.login(EMAIL_AD, EMAIL_PAS)
+        select_info = imapObj.select_folder('INBOX', readonly=True)
+        messages_num = select_info[b'EXISTS']
     return '{} messages in INBOX'.format(messages_num)
 
 def unread_email():
