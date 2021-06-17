@@ -28,14 +28,17 @@ def unread_email():
             email_message = email.message_from_bytes(message_data[b"RFC822"])
             print(uid, email_message.get('From'), email_message.get('Subject'))
 
-def read_messages():
+def read_messages(n):
+    """Read messages from your email.
+    :param n: message number (-1 for 1st on top).
+    """
     with imapclient.IMAPClient('imap.gmail.com', ssl=True) as imapObj:
         imapObj.login(EMAIL_AD, EMAIL_PAS)
         imapObj.select_folder('INBOX', readonly=True)
         uids = imapObj.search('UNSEEN')
-        raw_messages = imapObj.fetch([uids[-4]], ['BODY[]', 'FLAGS'])  # uids[-3] - 3td from above
+        raw_messages = imapObj.fetch([uids[n]], ['BODY[]', 'FLAGS'])  # uids[-1] - 1st on top.
         import pyzmail
-        message = pyzmail.PyzMessage.factory(raw_messages[uids[-4]][b'BODY[]'])
+        message = pyzmail.PyzMessage.factory(raw_messages[uids[n]][b'BODY[]'])
         
         print(message.get_subject())
         print(f'From: {message.get_addresses("from")}')
