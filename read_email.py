@@ -1,3 +1,4 @@
+# Download emails from imap.gmail.com server using imapclient module.
 import imapclient
 import email
 import pprint
@@ -21,8 +22,11 @@ def unread_email():
     """Download unread emails and parse them into 
     standard EmailMessage objects."""
     with imapclient.IMAPClient('imap.gmail.com', ssl=True) as imapObj:
+        # Logged in.
         imapObj.login(EMAIL_AD, EMAIL_PAS)
+        # Select a folder to search through
         imapObj.select_folder('INBOX', readonly=True)
+        # Call IMAPClient object's search(), passing in a string of IMAP search keyword.
         messages = imapObj.search(["UNSEEN"])
         for uid, message_data in imapObj.fetch(messages, "RFC822").items():
             email_message = email.message_from_bytes(message_data[b"RFC822"])
